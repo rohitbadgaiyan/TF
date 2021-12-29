@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway" xmlns:kafka="http://www.mulesoft.org/schema/mule/kafka"
+	xmlns:json-logger="http://www.mulesoft.org/schema/mule/json-logger"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/mule/json-logger/current/mule-json-logger.xsd
+http://www.mulesoft.org/schema/mule/kafka http://www.mulesoft.org/schema/mule/kafka/current/mule-kafka.xsd
+http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="cb79b4d4-30e2-4e52-8d76-c665816494e7" >
+		<http:listener-connection host="0.0.0.0" port="${http.port}" />
+	</http:listener-config>
+	<configuration doc:name="Configuration" doc:id="56282ef1-384c-4a72-b15b-382f05a8bf0b" defaultErrorHandler-ref="global-error-handler" />
+	<json-logger:config name="JSON_Logger_Config" doc:name="JSON Logger Config" doc:id="eaef4478-0c03-479f-a789-795a85137450" environment="${env}" />
+	<global-property doc:name="Global Property" doc:id="0e17a29f-7902-4d86-8c1f-8138e0f02145" name="env" value="dev" />
+	<kafka:producer-config name="Apache_Kafka_Producer_configuration" doc:name="Apache Kafka Producer configuration" doc:id="54e8587c-8ad3-4622-992e-02ac23af4c78" >
+		<kafka:producer-plaintext-connection >
+			<kafka:bootstrap-servers >
+				<kafka:bootstrap-server value="${kafka.bootstrap-server}" />
+			</kafka:bootstrap-servers>
+		</kafka:producer-plaintext-connection>
+	</kafka:producer-config>
+	<configuration-properties doc:name="Configuration properties" doc:id="7e3a0207-c769-4162-aa94-9c36c9a5d5e1" file="config/${env}.yaml" />
+	<configuration-properties doc:name="Configuration properties" doc:id="ece49444-f2e3-4e10-8f37-3b1f63f3ac48" file="config\common.yaml" />
+	<api-gateway:autodiscovery apiId="${API_ID}" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="b14c849b-fd6e-44bd-a67e-2deefb7237ae" flowRef="e-sfdc-datasync-api-main" />
+	<global-property doc:name="Global Property" doc:id="5239dcef-8294-4870-a5bd-e9c7b4b6508c" name="API_ID" value="17537658" />
+</mule>

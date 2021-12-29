@@ -1,0 +1,7 @@
+env: dev
+
+db:
+  username: "mulesoft"
+  password: "![V/uU2lO3NSfVaQ0D+2BsCQ==]"
+
+

@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:json-logger="http://www.mulesoft.org/schema/mule/json-logger"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/mule/json-logger/current/mule-json-logger.xsd">
+	<error-handler name="global-error-handler">
+            <on-error-propagate type="APIKIT:BAD_REQUEST">
+                <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" doc:name="400">
+                    <ee:message>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus"><![CDATA[400]]></ee:set-variable>
+					<ee:set-variable variableName="errorMessage" ><![CDATA[%dw 2.0
+output application/java
+---
+(error.errorType.namespace as String) ++ ":" ++ (error.errorType.identifier as String)]]></ee:set-variable>
+					<ee:set-variable variableName="errorDescription" ><![CDATA[%dw 2.0
+output application/java
+---
+error.description]]></ee:set-variable>
+                    
+</ee:variables>
+                </ee:transform>
+			<flow-ref doc:name="sf-error-mapping-reference" doc:id="9a6b1d2c-7b3d-40c4-9817-29f7916db1b5" name="sf-error-mapping"/>
+            
+</on-error-propagate>
+            <on-error-propagate type="APIKIT:NOT_FOUND">
+                <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" doc:name="404">
+                    <ee:message>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus"><![CDATA[404]]></ee:set-variable>
+					<ee:set-variable variableName="errorMessage" ><![CDATA[%dw 2.0
+output application/java
+---
+(error.errorType.namespace as String) ++ ":" ++ (error.errorType.identifier as String)]]></ee:set-variable>
+					<ee:set-variable variableName="errorDescription" ><![CDATA[%dw 2.0
+output application/java
+---
+error.description]]></ee:set-variable>
+                    
+</ee:variables>
+                </ee:transform>
+			<flow-ref doc:name="sf-error-mapping-reference" doc:id="a7dd89b3-2176-4ae1-aa02-76330cce3cd4" name="sf-error-mapping"/>
+            
+</on-error-propagate>
+            <on-error-propagate type="APIKIT:METHOD_NOT_ALLOWED">
+                <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" doc:name="405">
+                    <ee:message>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus"><![CDATA[405]]></ee:set-variable>
+					<ee:set-variable variableName="errorDescription" ><![CDATA[%dw 2.0
+output application/java
+---
+error.description]]></ee:set-variable>
+					<ee:set-variable variableName="errorMessage" ><![CDATA[%dw 2.0
+output application/java
+---
+(error.errorType.namespace as String) ++ ":" ++ (error.errorType.identifier as String)]]></ee:set-variable>
+                    
+</ee:variables>
+                </ee:transform>
+			<flow-ref doc:name="sf-error-mapping-reference" doc:id="734be069-eba8-49d9-bc43-a5fd62015635" name="sf-error-mapping"/>
+            
+</on-error-propagate>
+            <on-error-propagate type="APIKIT:NOT_ACCEPTABLE">
+                <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" doc:name="406">
+                    <ee:message>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus"><![CDATA[406]]></ee:set-variable>
+					<ee:set-variable variableName="errorMessage" ><![CDATA[%dw 2.0
+output application/java
+---
+(error.errorType.namespace as String) ++ ":" ++ (error.errorType.identifier as String)]]></ee:set-variable>
+					<ee:set-variable variableName="errorDescription" ><![CDATA[%dw 2.0
+output application/java
+---
+error.description]]></ee:set-variable>
+                    
+</ee:variables>
+                </ee:transform>
+			<flow-ref doc:name="sf-error-mapping-reference" doc:id="cf5d386d-48aa-4b99-97fd-c77efa2ad803" name="sf-error-mapping"/>
+            
+</on-error-propagate>
+            <on-error-propagate type="APIKIT:UNSUPPORTED_MEDIA_TYPE">
+                <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" doc:name="415">
+                    <ee:message>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus"><![CDATA[415]]></ee:set-variable>
+					<ee:set-variable variableName="errorMessage" ><![CDATA[%dw 2.0
+output application/java
+---
+(error.errorType.namespace as String) ++ ":" ++ (error.errorType.identifier as String)]]></ee:set-variable>
+					<ee:set-variable variableName="errorDescription" ><![CDATA[%dw 2.0
+output application/java
+---
+error.description]]></ee:set-variable>
+                    
+</ee:variables>
+                </ee:transform>
+			<flow-ref doc:name="sf-error-mapping-reference" doc:id="ece4f27c-e7ae-4196-95c2-1c04b6366dbd" name="sf-error-mapping"/>
+            
+</on-error-propagate>
+            <on-error-propagate type="APIKIT:NOT_IMPLEMENTED">
+                <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" doc:name="501">
+                    <ee:message>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus"><![CDATA[501]]></ee:set-variable>
+					<ee:set-variable variableName="errorMessage" ><![CDATA[%dw 2.0
+output application/java
+---
+(error.errorType.namespace as String) ++ ":" ++ (error.errorType.identifier as String)]]></ee:set-variable>
+					<ee:set-variable variableName="errorDesription" ><![CDATA[%dw 2.0
+output application/java
+---
+error.description]]></ee:set-variable>
+                    
+</ee:variables>
+                </ee:transform>
+			<flow-ref doc:name="sf-error-mapping-reference" doc:id="96d190fc-ccf8-4b78-925b-941a3a215b92" name="sf-error-mapping"/>
+            
+</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="7763c97a-5f30-44ef-9a3a-f9acc4237e06" type="HTTP:FORBIDDEN">
+			<ee:transform doc:name="Transform Message" doc:id="4825d4f8-03a7-484d-8924-cd1dd3af64fe" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+}]]></ee:set-payload>
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="errorDescription" ><![CDATA[%dw 2.0
+output application/java
+---
+error.description]]></ee:set-variable>
+					<ee:set-variable variableName="errorMessage" ><![CDATA[%dw 2.0
+output application/java
+---
+"Access to the upstream service is forbidden."]]></ee:set-variable>
+					<ee:set-variable variableName="httpStatus" ><![CDATA[%dw 2.0
+output application/java
+---
+403 as Number]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<flow-ref doc:name="sf-error-mapping-reference" doc:id="81aca1bf-b302-495b-bb56-a1e4ac6cd4b5" name="sf-error-mapping"/>
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="46865d6e-a53c-4745-ac24-f63439e7cbea" type="HTTP:CONNECTIVITY">
+			<ee:transform doc:name="Transform Message" doc:id="3b400545-180c-44dc-ac1a-9983e9ade0b9" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+}]]></ee:set-payload>
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="errorDescription" ><![CDATA[%dw 2.0
+output application/java
+---
+error.description]]></ee:set-variable>
+					<ee:set-variable variableName="errorMessage" ><![CDATA[%dw 2.0
+output application/java
+---
+"service Unavailable."]]></ee:set-variable>
+					<ee:set-variable variableName="httpStatus" ><![CDATA[%dw 2.0
+output application/java
+---
+503 as Number]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<flow-ref doc:name="sf-error-mapping-reference" doc:id="b189c504-adf3-4361-9b80-c333077feb1f" name="sf-error-mapping"/>
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="a5382bdb-6869-4a1a-aff3-f9685e72b46a" type="HTTP:INTERNAL_SERVER_ERROR">
+			<ee:transform doc:name="Transform Message" doc:id="0fbd4758-80d3-4209-8fe1-197235d8a8a6" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+}]]></ee:set-payload>
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="errorMessage" ><![CDATA[%dw 2.0
+output application/java
+---
+"Upstream service unable to fulfill request."]]></ee:set-variable>
+					<ee:set-variable variableName="httpStatus" ><![CDATA[%dw 2.0
+output application/java
+---
+500 as Number]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<flow-ref doc:name="sf-error-mapping-reference" doc:id="70191da5-b5da-4f1d-80d9-ef0431298e44" name="sf-error-mapping"/>
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="4f29bc3c-4bde-4f68-ade6-f51d3674689f" type="HTTP:METHOD_NOT_ALLOWED">
+			<ee:transform doc:name="Transform Message" doc:id="0cb7fbdc-f8c8-40fe-ab6b-c6c04d0d9b3d" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+}]]></ee:set-payload>
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="errorMessage" ><![CDATA[%dw 2.0
+output application/java
+---
+"the server has not found anything matching the Request-URI."]]></ee:set-variable>
+					<ee:set-variable variableName="httpStatus" ><![CDATA[%dw 2.0
+output application/java
+---
+404 as Number]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<flow-ref doc:name="sf-error-mapping-reference" doc:id="bf2b3460-3123-4709-81e9-d785f6af6bb0" name="sf-error-mapping"/>
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="ca14ec46-e9af-47b4-958d-77681e9be06b" type="HTTP:NOT_FOUND">
+			<ee:transform doc:name="Transform Message" doc:id="34471915-95e0-4814-ad39-174025e8e034" >
+				<ee:message >
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="errorMessage" ><![CDATA[%dw 2.0
+output application/java
+---
+"the server has not found anything matching the Request-URI."]]></ee:set-variable>
+					<ee:set-variable variableName="httpStatus" ><![CDATA[%dw 2.0
+output application/java
+---
+404 as Number]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<flow-ref doc:name="sf-error-mapping-reference" doc:id="5b2bc212-f002-46b0-96e5-23f128043dd3" name="sf-error-mapping"/>
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="d907902a-5531-4bc9-b477-c03b2df678e7" type="CONNECTIVITY">
+			<ee:transform doc:name="Transform Message" doc:id="52cc42f9-9655-4d7c-9d85-bb89bcf77694" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+}]]></ee:set-payload>
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="httpStatus" ><![CDATA[%dw 2.0
+output application/java
+---
+503 as Number]]></ee:set-variable>
+					<ee:set-variable variableName="errorMessage" ><![CDATA[%dw 2.0
+output application/java
+---
+(error.errorType.namespace as String) ++ ":" ++ (error.errorType.identifier as String)]]></ee:set-variable>
+					<ee:set-variable variableName="errorDescription" ><![CDATA[%dw 2.0
+output application/java
+---
+error.description]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<flow-ref doc:name="sf-error-mapping-reference" doc:id="d35c5328-59c2-415f-bdb8-d83586246515" name="sf-error-mapping"/>
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="bb7bbbdb-7cc2-4aa4-a112-133367a21623" type="ANY">
+			<ee:transform doc:name="Transform Message" doc:id="2fc5f17e-02a0-4187-aa81-6f39b96e329b" >
+				<ee:message >
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="httpStatus" ><![CDATA[%dw 2.0
+output application/json
+---
+if(error.muleMessage.attributes.StatusCode? and error.muleMessage.attributes.StatusCode != null)error.muleMessage.attributes.StatusCode else "500" as Number]]></ee:set-variable>
+					<ee:set-variable variableName="errorDescription" ><![CDATA[%dw 2.0
+output application/java
+---
+"Unable to process the request. " ++ (error.description as String)]]></ee:set-variable>
+					<ee:set-variable variableName="errorMessage" ><![CDATA[%dw 2.0
+output application/java
+---
+(error.errorType.namespace as String) ++ ":" ++ (error.errorType.identifier as String)]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<ee:transform doc:name="Transform Message" doc:id="a5be7c20-6a9e-45d9-8594-353412603074" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+import modules::GlobalFunctions as BusinessErCode
+---
+{
+	messageId: correlationId,
+	BusinessId: "",
+	transactionId: vars.transactionId,
+	environment: Mule::p('env'),
+	id: Mule::p('api.id'),
+	name: Mule::p('api.name'),
+	domain: "CUST",
+	muleProjectName: Mule::p('project.name'),
+	muleFlowName: error.exception.exceptionInfo.flowStack.innerStack[0].flowName,
+	soureceSystem: "Hybris",
+	targetSystem: "Melissa",
+	logType: "error",
+	Severity: "3",
+	logTimeStamp: now() as String {format: "dd-MM-yy_HH-mm-ss.SSS"},
+	errorType: error.errorType.identifier,
+	errorCode: vars.httpStatus,
+	errorDetails: vars.errorDescription,
+	errorStacktrace: error.cause.localizedMessage,
+	eroorMessage: vars.errorMessage,
+	inputMessage: payload,
+	NameValuePair: "",
+	customErrorMessage: BusinessErCode::getGlobalErrorCode(vars.httpStatus as String),
+	
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<json-logger:logger doc:name="error-logger" doc:id="229fe6ff-3ea1-4694-9e38-65928f90849e" config-ref="JSON_Logger_Config" message="error subflow" priority="#[p('loglevel.info')]" >
+				<json-logger:content ><![CDATA[#[import modules::JSONLoggerModule output application/json ---
+{ 
+    payload: JSONLoggerModule::stringifyNonJSON(payload) 
+}]]]></json-logger:content>
+			</json-logger:logger>
+			<set-variable value="#[payload]" doc:name="set-variable" doc:id="b08054bb-d69d-4715-a7e7-283d0abc0e7e" variableName="logPayload" />
+		</on-error-propagate>
+		<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="aad63561-7655-468a-879b-0aad3b8e1544" type="KAFKA:CONNECTIVITY, KAFKA:TIMEOUT">
+			<ee:transform doc:name="Transform Message" doc:id="ce443022-d53d-4232-b8f1-f68a2e0e7542">
+				<ee:message />
+				<ee:variables>
+					<ee:set-variable variableName="httpStatus"><![CDATA[%dw 2.0
+output application/json
+---
+if(error.muleMessage.attributes.StatusCode? and error.muleMessage.attributes.StatusCode != null)error.muleMessage.attributes.StatusCode else "500" as Number]]></ee:set-variable>
+					<ee:set-variable variableName="errorDescription"><![CDATA[%dw 2.0
+output application/java
+---
+"Unable to process the request. " ++ (error.description as String)]]></ee:set-variable>
+					<ee:set-variable variableName="errorMessage"><![CDATA[%dw 2.0
+output application/java
+---
+(error.errorType.namespace as String) ++ ":" ++ (error.errorType.identifier as String)]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<flow-ref doc:name="Flow Reference" doc:id="222708fa-1b7c-45e8-a08c-12fdfdfcceab" name="sf-error-mapping"/>
+		</on-error-continue>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="2bf10dd6-440a-4370-b800-3f61265f21f2" type="KAFKA:RETRY_EXHAUSTED">
+			<ee:transform doc:name="Transform Message" doc:id="f6ce5783-663f-484b-b99a-e7cdbcde5d30">
+				<ee:message />
+				<ee:variables>
+					<ee:set-variable variableName="httpStatus"><![CDATA[%dw 2.0
+output application/json
+---
+if(error.muleMessage.attributes.StatusCode? and error.muleMessage.attributes.StatusCode != null)error.muleMessage.attributes.StatusCode else "500" as Number]]></ee:set-variable>
+					<ee:set-variable variableName="errorDescription"><![CDATA[%dw 2.0
+output application/java
+---
+"Unable to process the request. " ++ (error.description as String)]]></ee:set-variable>
+					<ee:set-variable variableName="errorMessage"><![CDATA[%dw 2.0
+output application/java
+---
+(error.errorType.namespace as String) ++ ":" ++ (error.errorType.identifier as String)]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<flow-ref doc:name="Flow Reference" doc:id="59948ef0-7328-4b9f-ab2f-93ea68cf0039" name="sf-error-mapping"/>
+		</on-error-propagate>
+        
+</error-handler>
+	<sub-flow name="sf-error-mapping" doc:id="86894fcf-6633-4d21-b670-8dfaafebf865" >
+		<ee:transform doc:name="Transform Message" doc:id="2dd2dfcc-6324-4917-b765-e1281e4cdf9c">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+import modules::GlobalFunctions as BusinessErCode
+---
+{
+	messageId: correlationId,
+	BusinessId: "",
+	transactionId: vars.transactionId,
+	environment: Mule::p('env'),
+	id: Mule::p('api.id'),
+	name: Mule::p('api.name'),
+	domain: "CUST",
+	muleProjectName: Mule::p('project.name'),
+	muleFlowName: error.exception.exceptionInfo.flowStack.innerStack[0].flowName,
+	soureceSystem: "Hybris",
+	targetSystem: "Melissa",
+	logType: "error",
+	Severity: "3",
+	logTimeStamp: now() as String {format: "dd-MM-yy_HH-mm-ss.SSS"},
+	errorType: error.errorType.identifier,
+	errorCode: vars.httpStatus,
+	errorDetails: vars.errorDescription,
+	errorStacktrace: error.cause.localizedMessage,
+	eroorMessage: vars.errorMessage,
+	inputMessage: payload,
+	NameValuePair: "",
+	customErrorMessage: BusinessErCode::getGlobalErrorCode(vars.httpStatus as String),
+	
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<json-logger:logger doc:name="error-logger" doc:id="c4e2b338-6079-411c-8cca-c30a2dbb18fa" config-ref="JSON_Logger_Config" message="error subflow" priority="#[p('loglevel.info')]">
+			<json-logger:content><![CDATA[#[import modules::JSONLoggerModule output application/json ---
+{ 
+    payload: JSONLoggerModule::stringifyNonJSON(payload) 
+}]]]></json-logger:content>
+		</json-logger:logger>
+		<set-variable value="#[payload]" doc:name="set-variable" doc:id="77a9dada-1810-4fdc-8909-042d375a2e22" variableName="logPayload"/>
+	</sub-flow>
+</mule>

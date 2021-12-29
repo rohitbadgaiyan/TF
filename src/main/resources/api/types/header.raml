@@ -1,0 +1,17 @@
+#%RAML 1.0 Trait
+headers:
+  consumerID:
+    description: This is ID for identify the salesforce instance.
+    type: string
+    required: true
+    example: "corp"
+  objectName:
+    description: This is ID for identify the salesforce instance.
+    type: string
+    required: true
+    example: "Account"
+  correlationId:
+    type: string
+    description: A unique identification string for the source system. This could be a system name or hostname where a system is hosted on multiple hosts.
+    required: false
+    example: "100101"

@@ -1,0 +1,25 @@
+env: local
+
+json:
+  logger:
+    application:
+      name: "e-sfdc-datasync-api"
+      version:  "1.0.0"
+
+http:
+  port: "8082"
+  
+kafka:
+  bootstrap-server: "localhost:29092"
+  topic:
+    contact: "corp-contacts-datasync"
+    opportunity: "corp-opportunities-datasync"
+    account: "corp-accounts-datasync"
+  Partition: "0"
+  groupid: "dev"
+  errortopic: "errorQ"
+  retrytopic: "retryQ"
+  
+retry:
+  maxretry: "5"
+  retryInterval: "5000"

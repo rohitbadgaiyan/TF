@@ -1,0 +1,65 @@
+#%RAML 1.0 DataType
+displayName: Common Response Format
+description: The common response format used for all API Calls.
+properties:
+  LastModifiedDate:
+    type: string
+    example: "2021-12-09T15:15:41.000Z"
+  "Languages__c":
+     type: string
+     example: 
+     required: false
+  AccountId: 
+     type: string
+     example: "0015f00000F7T6vAAF"
+
+
+
+  error:
+    type: object
+    required: false
+    description: An optional object only returned in case of an error. 
+    properties:
+      description:
+        type: string
+        description: A description of the error.
+        example: Missing required header - x-api-correlation-id
+        required: true
+      code:
+        type: string
+        description: A unique code identifying the error.
+        example: 'API_GET_001'
+        required: true
+      timestamp:
+        type: string
+        required: true
+        description: A timestamp identifying the time of the error.
+        example: "2020-01-01T00:00:01"
+      additionalDetails:
+        type: any
+        required: false
+        description: An optional attribute that could be of any type, usually an object or string that provides extra details around the exception cause.
+        examples:
+          simple-string:
+            "HTTP Header x-correlation-id was provided but failed to be transmitted downstream."
+          complex-object:
+            downstream:
+              error:
+                description: "Missing required header - x-correlation-id"
+                code: "API_POST_009"
+                timestamp: "2020-01-01T00:00:01"
+      requestReference:
+        type: object
+        description: Request metadata for the request that caused the error.
+        required: false
+        properties:
+          method:
+            description: HTTP Method
+            type: string
+            example: GET
+            required: true
+          uri:
+            description: Resource URI
+            type: string
+            example: /accounts/02020202
+            required: true

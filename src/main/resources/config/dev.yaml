@@ -1,0 +1,24 @@
+env: dev
+
+json:
+  logger:
+    application:
+      name: "e-sfdc-datasync-api"
+      version:  "1.0.0"
+
+http:
+  port: "8091"
+  
+kafka:
+  bootstrap-server: "b-1.es-kafka-preprod-clus.zq5wh2.c16.kafka.us-east-1.amazonaws.com:9092,b-2.es-kafka-preprod-clus.zq5wh2.c16.kafka.us-east-1.amazonaws.com:9092"
+  topic:
+    contact: "corp-contacts-datasync"
+    opportunity: "corp-opportunities-datasync"
+    account: "corp-accounts-datasync"
+  Partition: "0"
+  errortopic: "errorQ"
+  retrytopic: "retryQ"
+  
+retry:
+  maxretry: "5"
+  retryInterval: "5000"

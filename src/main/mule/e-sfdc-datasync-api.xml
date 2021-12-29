@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:json-logger="http://www.mulesoft.org/schema/mule/json-logger" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:kafka="http://www.mulesoft.org/schema/mule/kafka" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd 
+http://www.mulesoft.org/schema/mule/kafka http://www.mulesoft.org/schema/mule/kafka/current/mule-kafka.xsd
+http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/mule/json-logger/current/mule-json-logger.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd">
+    <http:listener-config name="e-sfdc-datasync-api-httpListenerConfig">
+        <http:listener-connection host="0.0.0.0" port="8089" />
+    </http:listener-config>
+    <apikit:config name="e-sfdc-datasync-api-config" api="e-sfdc-datasync-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <flow name="e-sfdc-datasync-api-main">
+        <http:listener config-ref="e-sfdc-datasync-api-httpListenerConfig" path="/api/*">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body>#[payload]</http:body>
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:error-response>
+        </http:listener>
+		<apikit:router config-ref="e-sfdc-datasync-api-config" />
+    </flow>
+    <flow name="e-sfdc-datasync-api-console">
+        <http:listener config-ref="e-sfdc-datasync-api-httpListenerConfig" path="/console/*">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body>#[payload]</http:body>
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:error-response>
+        </http:listener>
+        <apikit:console config-ref="e-sfdc-datasync-api-config" />
+    </flow>
+    <flow name="get:\health-check:e-sfdc-datasync-api-config">
+        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  status: "ok"
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="post:\datasync:application\json:e-sfdc-datasync-api-config">
+        <tracking:transaction doc:name="Set Transaction Id" doc:id="982c107a-369e-4c7b-b296-5fed234d1811" id="#[if(sizeOf(attributes.header.correlationId)&gt;=1) (attributes.header.correlationId) else uuid()]" />
+		<json-logger:logger doc:name="Logger" doc:id="c1f3021f-deb9-4d4d-9f7c-a25aaf9875d9" config-ref="JSON_Logger_Config" message='"Start DataSync API"' priority="#[p('loglevel.info')]"/>
+		<kafka:publish doc:name="Publish" doc:id="b4416b7a-bee6-4066-ad01-e77aebea77c2" config-ref="Apache_Kafka_Producer_configuration" topic='#["es.sfdc." ++ (attributes.headers.objectid as String) ++ ".datasync.v1"]' key="now()">
+			<kafka:headers><![CDATA[#[output application/json
+---
+{
+CRM: attributes.headers.consumerID,
+msgID: correlationId
+}]]]></kafka:headers>
+		</kafka:publish>
+		<ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  data: {
+    StatusMessage: "Request has been received.",
+    RequestId: "2294738"
+  }
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+		<json-logger:logger doc:name="Logger" doc:id="d134db53-3a1f-4e2f-99a3-1649c366eda2" config-ref="JSON_Logger_Config" message='"End DataSync API"' tracePoint="END" priority="#[p('loglevel.info')]"/>
+    </flow>
+</mule>

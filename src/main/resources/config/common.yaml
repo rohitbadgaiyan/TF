@@ -1,0 +1,27 @@
+api:
+  name: "template-request-reply"
+  version: "v1"
+  id: "17537658"
+
+project:
+  name: "e-template-request-reply"
+  
+json:
+  logger:
+    application:
+      name: "template-request-reply"
+      version:  "1.0.0"
+      
+loglevel:
+     info: "INFO"
+     debug: "DEBUG"
+     error: "ERROR"
+     "trace": "TRACE"
+     warn:  "WARN"
+
+anypoint:
+  platfrom:
+    client_id: ""
+    client_secret: ""
+
+    
