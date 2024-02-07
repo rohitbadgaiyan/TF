@@ -38,7 +38,7 @@ http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/m
 output application/json
 ---
 {
-  status: "ok"
+  status: "ok check"
 }]]></ee:set-payload>
             </ee:message>
         </ee:transform>
